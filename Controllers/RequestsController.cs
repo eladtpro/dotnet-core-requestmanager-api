@@ -48,15 +48,9 @@ namespace RequestManager.Controllers
 
         // POST api/requests
         [HttpPost]
-        public Request Post([FromBody] Request request)
+        public void Post([FromBody] Request request)
         {
-            if (!Requests.TryGetValue(request.Id, out Request existing))
-                throw new KeyNotFoundException($"Could not found request with id {request.Id}");
-            
-            if(Requests.TryUpdate(request.Id, request, existing))
-                return Requests[request.Id];
-
-            return existing;
+            Requests.TryAdd(request.Id, request);
         }
 
         // PUT api/requests

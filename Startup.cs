@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.OpenApi.Models;
+
 
 namespace RequestManager
 {
@@ -28,6 +30,11 @@ namespace RequestManager
             services.AddSignalR();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Request API", Version = "v1" });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -40,13 +47,16 @@ namespace RequestManager
                 app.UseHsts();
 
             app.UseHttpsRedirection();
+            app.UseSwagger();
 
             // https://medium.com/@rukshandangalla/how-to-notify-your-angular-5-app-using-signalr-5e5aea2030b2
             app.UseCors("CorsPolicy");
-            //app.UseSignalR(routes =>
-            //{
-            //    routes.MapHub<NotifyHub>("notify");
-            //});
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Request Manager API V1");
+                c.RoutePrefix = string.Empty;
+            });
 
             app.UseMvc();
         }
