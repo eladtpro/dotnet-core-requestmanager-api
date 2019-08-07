@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace RequestManager.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api")]
     [ApiController]
     public class RequestsController : ControllerBase
     {
@@ -21,6 +21,7 @@ namespace RequestManager.Controllers
         
         // GET api/requests
         [HttpGet]
+        [Route("[controller]")]
         public IEnumerable<Request> Get(RequestStatus? status, PackageType? type, string pattern)
         {
             //return Requests.
@@ -39,29 +40,36 @@ namespace RequestManager.Controllers
         }
 
         // GET api/requests/523486
-        [HttpGet("{id}")]
+        [HttpGet("[controller]/{id}")]
         public Request Get(int id)
         {
             return Requests.TryGetValue(id, out Request existing) ? existing : null;
         }
 
-
         // POST api/requests
         [HttpPost]
-        public void Post([FromBody] Request request)
+        [Route("request")]
+        public Request Post([FromBody]Request request)
         {
-            Requests.TryAdd(request.Id, request);
+            request.Id = Requests.Keys.Max() + 1;
+            if (Requests.TryAdd(request.Id, request))
+                return request;
+            return null;
         }
 
         // PUT api/requests
+        [HttpPut]
+        [Route("request")]
         public Request Put([FromBody]Request request)
         {
-            request.Id = Requests.Keys.Max() + 1;
-            Requests[request.Id] = request;
-            return Requests[request.Id];
+            if(Requests.TryUpdate(request.Id, request, Requests[request.Id]))
+                return Requests[request.Id];
+            return null;
         }
 
         // DELETE api/requests/5
+        [HttpDelete]
+        [Route("request")]
         public Request Delete(int id)
         {
             Requests.TryRemove(id, out Request request);
