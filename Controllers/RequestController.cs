@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace RequestManager.Controllers
 {
-    [Route("api")]
+    [Route("api/[controller]")]
     [ApiController]
-    public class RequestsController : ControllerBase
+    public class RequestController : ControllerBase
     {
         private static readonly Lazy<ConcurrentDictionary<int, Request>> requests = new Lazy<ConcurrentDictionary<int, Request>>(
             () => new ConcurrentDictionary<int, Request>(Dummy.Requests),
@@ -21,7 +21,6 @@ namespace RequestManager.Controllers
         
         // GET api/requests
         [HttpGet]
-        [Route("[controller]")]
         public IEnumerable<Request> Get(RequestStatus? status, PackageType? type, string pattern)
         {
             //return Requests.
@@ -40,7 +39,7 @@ namespace RequestManager.Controllers
         }
 
         // GET api/requests/523486
-        [HttpGet("[controller]/{id}")]
+        [HttpGet("{id}")]
         public Request Get(int id)
         {
             return Requests.TryGetValue(id, out Request existing) ? existing : null;
@@ -48,7 +47,6 @@ namespace RequestManager.Controllers
 
         // POST api/requests
         [HttpPost]
-        [Route("request")]
         public Request Post([FromBody]Request request)
         {
             request.Id = Requests.Keys.Max() + 1;
@@ -59,7 +57,6 @@ namespace RequestManager.Controllers
 
         // PUT api/requests
         [HttpPut]
-        [Route("request")]
         public Request Put([FromBody]Request request)
         {
             if(Requests.TryUpdate(request.Id, request, Requests[request.Id]))
@@ -69,7 +66,6 @@ namespace RequestManager.Controllers
 
         // DELETE api/requests/5
         [HttpDelete]
-        [Route("request")]
         public Request Delete(int id)
         {
             Requests.TryRemove(id, out Request request);
