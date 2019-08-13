@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using RequestManager.Model;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -13,12 +15,13 @@ namespace RequestManager.Controllers
     [ApiController]
     public class RequestController : ControllerBase
     {
-        private static readonly Lazy<ConcurrentDictionary<int, Request>> requests = new Lazy<ConcurrentDictionary<int, Request>>(
-            () => new ConcurrentDictionary<int, Request>(Dummy.Requests),
-            LazyThreadSafetyMode.PublicationOnly);
+        public static IDictionary<int, Request> Requests => Dummy.Requests;
 
-        public static ConcurrentDictionary<int, Request> Requests => requests.Value;
-        
+        public RequestController(IHttpContextAccessor httpContextAccessor)
+        {
+            string userId = httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+        }
+
         // GET api/requests
         [HttpGet]
         public IEnumerable<Request> Get(RequestStatus? status, PackageType? type, string pattern)
@@ -50,25 +53,30 @@ namespace RequestManager.Controllers
         public Request Post([FromBody]Request request)
         {
             request.Id = Requests.Keys.Max() + 1;
+            request.User = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             if (Requests.TryAdd(request.Id, request))
                 return request;
             return null;
         }
 
         // PUT api/requests
-        [HttpPut]
+        [HttpPut("{id}")]
         public Request Put([FromBody]Request request)
         {
-            if(Requests.TryUpdate(request.Id, request, Requests[request.Id]))
-                return Requests[request.Id];
-            return null;
+            if (request.Id < 1)
+                request.Id = Requests.Keys.Max() + 1;
+
+            Requests[request.Id] = request;
+
+            return request;
         }
 
         // DELETE api/requests/5
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public Request Delete(int id)
         {
-            Requests.TryRemove(id, out Request request);
+            if(Requests.TryGetValue(id, out Request request))
+                Requests.Remove(id);
             return request;
         }
     }

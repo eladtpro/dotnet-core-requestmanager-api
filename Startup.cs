@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,7 +23,12 @@ namespace RequestManager
         {
             services.AddCors(o => o.AddPolicy("CorsPolicy", builder =>
             {
+                // .WithMethods("GET", "POST", "PUT", "DELETE")
+                // .WithHeaders("content-type")
+
+
                 builder
+                .AllowCredentials()
                 .AllowAnyMethod()
                 .AllowAnyHeader()
                 .WithOrigins("http://localhost:4200");
@@ -30,6 +36,7 @@ namespace RequestManager
             services.AddSignalR();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>(); // https://stackoverflow.com/questions/36641338/how-get-current-user-in-asp-net-core
 
             services.AddSwaggerGen(c =>
             {

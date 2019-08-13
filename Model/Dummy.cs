@@ -1,14 +1,19 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 
 namespace RequestManager.Model
 {
     public static class Dummy
     {
-        public static Dictionary<int, Request> Requests => requests.Value;
+        private static readonly Lazy<ConcurrentDictionary<int, Request>> requests = new Lazy<ConcurrentDictionary<int, Request>>(
+            () => new ConcurrentDictionary<int, Request>(GetRequests()),
+            LazyThreadSafetyMode.PublicationOnly);
 
-        private static Lazy<Dictionary<int, Request>> requests = new Lazy<Dictionary<int, Request>>(GetRequests);
+        public static ConcurrentDictionary<int, Request> Requests => requests.Value;
+
 
         private static Dictionary<int, Request> GetRequests()
         {
