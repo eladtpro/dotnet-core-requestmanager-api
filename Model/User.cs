@@ -1,17 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.ComponentModel;
 using System.Security.Principal;
-using System.Text;
 
 namespace RequestManager.Model
 {
-    public class User : IIdentity
+    public partial class User : IIdentity
     {
-        public string DisplayName { get; set; }
-        public string Username { get; set; }
+        private User() { }
 
-        public string AuthenticationType => throw new NotImplementedException();
-        public bool IsAuthenticated => throw new NotImplementedException();
-        public string Name => throw new NotImplementedException();
+        public string AuthenticationType { get; private set; }
+        public bool IsAuthenticated { get; private set; }
+        public string Name { get; private set; }
+        public string Domain { get; private set; }
+
+        [Description("givenName")]
+        public string FirstName { get; private set; }
+        [Description("sn")]
+        public string LastName { get; private set; }
+        [Description("displayName")]
+        public string DisplayName { get; private set; }
+        [Description("mail")]
+        public string Email { get; private set; }
+        [Description("sAMAccountName")]
+        public string Username { get; private set; }
+
     }
 }
