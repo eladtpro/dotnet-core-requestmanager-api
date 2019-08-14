@@ -27,8 +27,7 @@ namespace RequestManager
                 .AllowCredentials()
                 .AllowAnyMethod()
                 .AllowAnyHeader()
-                .AllowAnyOrigin()
-                //.WithOrigins("http://localhost:4200")
+                .WithOrigins("http://localhost:4200", "http://localhost:8080", "http://localhost:3000")
                 ;
             }));
             services.AddSignalR();
