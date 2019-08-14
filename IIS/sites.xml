@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<appcmd>
+    <SITE SITE.NAME="Default Web Site" SITE.ID="1" bindings="http/*:80:" state="Started">
+
+        <site name="Default Web Site" id="1" serverAutoStart="true">
+
+            <bindings>
+
+                <binding protocol="http" bindingInformation="*:80:" />
+
+            </bindings>
+
+            <limits />
+
+            <logFile>
+
+                <customFields>
+
+                </customFields>
+
+            </logFile>
+
+            <traceFailedRequestsLogging />
+
+            <hsts />
+
+            <applicationDefaults />
+
+            <virtualDirectoryDefaults />
+
+            <ftpServer>
+
+                <connections />
+
+                <security>
+
+                    <dataChannelSecurity />
+
+                    <commandFiltering>
+
+                    </commandFiltering>
+
+                    <ssl />
+
+                    <sslClientCertificates />
+
+                    <authentication>
+
+                        <anonymousAuthentication />
+
+                        <basicAuthentication />
+
+                        <clientCertAuthentication />
+
+                        <customAuthentication>
+
+                            <providers>
+
+                            </providers>
+
+                        </customAuthentication>
+
+                    </authentication>
+
+                    <customAuthorization>
+
+                        <provider />
+
+                    </customAuthorization>
+
+                </security>
+
+                <customFeatures>
+
+                    <providers>
+
+                    </providers>
+
+                </customFeatures>
+
+                <messages />
+
+                <fileHandling />
+
+                <firewallSupport />
+
+                <userIsolation>
+
+                    <activeDirectory />
+
+                </userIsolation>
+
+                <directoryBrowse />
+
+                <logFile />
+
+            </ftpServer>
+
+            <application path="/" applicationPool="Default Web Site AppPool 2">
+
+                <virtualDirectoryDefaults />
+
+                <virtualDirectory path="/" physicalPath="C:\Users\eladt\Documents\Projects\dotnet core\RequestManager" />
+
+            </application>
+
+            <application path="/node">
+
+                <virtualDirectoryDefaults />
+
+                <virtualDirectory path="/" physicalPath="C:\Program Files\iisnode\www" />
+
+            </application>
+
+            <application path="/integratednode" applicationPool="DefaultAppPool">
+
+                <virtualDirectoryDefaults />
+
+                <virtualDirectory path="/" physicalPath="C:\Users\eladt\Documents\Projects\Node\WindowsIntegrated" />
+
+            </application>
+
+            <application path="/node/express" applicationPool=".NET Integrated">
+
+                <virtualDirectoryDefaults />
+
+                <virtualDirectory path="/" physicalPath="C:\Program Files\iisnode\www\express" />
+
+            </application>
+
+        </site>
+
+    </SITE>
+
+    <SITE SITE.NAME="RequestManager" SITE.ID="2" bindings="http/*:8080:,http/*:8080:localhost" state="Stopped">
+
+        <site name="RequestManager" id="2" serverAutoStart="false">
+
+            <bindings>
+
+                <binding protocol="http" bindingInformation="*:8080:" />
+
+                <binding protocol="http" bindingInformation="*:8080:localhost" />
+
+            </bindings>
+
+            <limits />
+
+            <logFile>
+
+                <customFields>
+
+                </customFields>
+
+            </logFile>
+
+            <traceFailedRequestsLogging />
+
+            <hsts />
+
+            <applicationDefaults />
+
+            <virtualDirectoryDefaults />
+
+            <ftpServer>
+
+                <connections />
+
+                <security>
+
+                    <dataChannelSecurity />
+
+                    <commandFiltering>
+
+                    </commandFiltering>
+
+                    <ssl />
+
+                    <sslClientCertificates />
+
+                    <authentication>
+
+                        <anonymousAuthentication />
+
+                        <basicAuthentication />
+
+                        <clientCertAuthentication />
+
+                        <customAuthentication>
+
+                            <providers>
+
+                            </providers>
+
+                        </customAuthentication>
+
+                    </authentication>
+
+                    <customAuthorization>
+
+                        <provider />
+
+                    </customAuthorization>
+
+                </security>
+
+                <customFeatures>
+
+                    <providers>
+
+                    </providers>
+
+                </customFeatures>
+
+                <messages />
+
+                <fileHandling />
+
+                <firewallSupport />
+
+                <userIsolation>
+
+                    <activeDirectory />
+
+                </userIsolation>
+
+                <directoryBrowse />
+
+                <logFile />
+
+            </ftpServer>
+
+            <application path="/" applicationPool="APICore">
+
+                <virtualDirectoryDefaults />
+
+                <virtualDirectory path="/" physicalPath="C:\Users\eladt\Documents\Projects\dotnet core\RequestManager\publish" />
+
+            </application>
+
+        </site>
+
+    </SITE>
+
+</appcmd>

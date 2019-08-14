@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<appcmd>
+    <APPPOOL APPPOOL.NAME="Default Web Site AppPool 2" PipelineMode="Integrated" RuntimeVersion="v4.0" state="Started">
+        <add name="Default Web Site AppPool 2" autoStart="true" managedRuntimeVersion="v4.0" startMode="OnDemand">
+            <processModel identityType="SpecificUser" userName="middleeast\eladt" password="GreatDay2020" />
+            <recycling>
+                <periodicRestart>
+                    <schedule>
+                    </schedule>
+                </periodicRestart>
+            </recycling>
+            <failure />
+            <cpu />
+            <environmentVariables>
+            </environmentVariables>
+        </add>
+    </APPPOOL>
+</appcmd>

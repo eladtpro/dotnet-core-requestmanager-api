@@ -21,7 +21,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "RequestManager": {
+    "IIS": {
       "commandName": "IIS",
       "launchBrowser": true,
       "launchUrl": "http://localhost/api/request",
