@@ -1,13 +1,14 @@
 ﻿using Novell.Directory.Ldap;
+using RequestManager.Model;
 using System;
 using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Security.Principal;
 
-namespace RequestManager.Model
+namespace RequestManager.Directory
 {
-    public partial class User
+    public class LdapRepository
     {
         private static Lazy<string[]> Attributes = new Lazy<string[]>(() =>
         {
@@ -15,8 +16,7 @@ namespace RequestManager.Model
             return attrs.Select(attr => attr.Description).ToArray();
         });
 
-
-        public static User Factory(IIdentity identity)
+        public static User Fill(IIdentity identity)
         {
             string[] fqdn = identity.Name.Split('\\');
             User user = new User
@@ -29,24 +29,26 @@ namespace RequestManager.Model
 
             using (LdapConnection ldapConnection = new LdapConnection() { SecureSocketLayer = false })
             {
-                ldapConnection.Connect(Properties.Resources.Server, int.Parse(Properties.Resources.Port));
+                ldapConnection.Connect("Server", 0);
                 try
                 {
-                    ldapConnection.Bind(Properties.Resources.User, Properties.Resources.Password);
-                    string filter = string.Format(Properties.Resources.UserFilter, user.Name);
+                    //string user = Configuration["Movies:ServiceApiKey"]
+
+                    ldapConnection.Bind(LdapConnectionSettings.Current.User, LdapConnectionSettings.Current.Password);
+                    string filter = string.Format("UserFilter", user.Name);
 
                     LdapSearchResults results = ldapConnection.Search(
-                        Properties.Resources.SearchBase,
+                        "SearchBase",
                         LdapConnection.SCOPE_SUB,
                         filter,
-                        User.Attributes.Value,
+                        Attributes.Value,
                         false);
 
                     LdapEntry entry = results.HasMore() ? results.Next() : null;
                     if (null == entry)
                         return user;
 
-                    user.Fill(entry);
+                    Fill(ref user, entry);
                     return user;
                 }
                 catch (Exception)
@@ -56,7 +58,7 @@ namespace RequestManager.Model
             }
         }
 
-        public void Fill(LdapEntry entry)
+        private static void Fill(ref User user, LdapEntry entry)
         {
             PropertyInfo[] props = typeof(User).GetProperties();
             foreach (PropertyInfo property in props)
@@ -69,7 +71,7 @@ namespace RequestManager.Model
                     continue;
 
                 string value = ldapAttr.StringValue;
-                property.SetValue(this, value);
+                property.SetValue(user, value);
             }
         }
     }

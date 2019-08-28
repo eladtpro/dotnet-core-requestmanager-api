@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using RequestManager.Model;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,6 +7,7 @@ using System.Security.Claims;
 
 namespace RequestManager.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class RequestController : Controller

@@ -3,25 +3,25 @@ using System.Security.Principal;
 
 namespace RequestManager.Model
 {
-    public partial class User : IIdentity
+    public class User : IIdentity
     {
-        private User() { }
+        internal User() { }
 
-        public string AuthenticationType { get; private set; }
-        public bool IsAuthenticated { get; private set; }
-        public string Name { get; private set; }
-        public string Domain { get; private set; }
+        public string AuthenticationType { get; internal set; }
+        public bool IsAuthenticated { get; internal set; }
+        public string Name { get; internal set; }
+        public string Domain { get; internal set; }
 
         [Description("givenName")]
-        public string FirstName { get; private set; }
+        public string FirstName { get; internal set; }
         [Description("sn")]
-        public string LastName { get; private set; }
+        public string LastName { get; internal set; }
         [Description("displayName")]
-        public string DisplayName { get; private set; }
+        public string DisplayName { get; internal set; }
         [Description("mail")]
-        public string Email { get; private set; }
+        public string Email { get; internal set; }
         [Description("sAMAccountName")]
-        public string Username { get; private set; }
+        public string Username { get; internal set; }
 
     }
 }

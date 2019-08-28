@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
+using RequestManager.Directory;
 using User = RequestManager.Model.User;
 
 namespace RequestManager.Controllers
@@ -17,7 +18,7 @@ namespace RequestManager.Controllers
 
                 if (cache.TryGetValue(fqdn, out user))
                     return user;
-                user = RequestManager.Model.User.Factory(HttpContext.User.Identity);
+                user = LdapRepository.Fill(HttpContext.User.Identity);
                 cache.Set(fqdn, user);
                 return user;
             }
