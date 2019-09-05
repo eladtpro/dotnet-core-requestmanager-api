@@ -1,6 +1,6 @@
 {
   "iisSettings": {
-    "windowsAuthentication": false,
+    "windowsAuthentication": true,
     "anonymousAuthentication": true,
     "iis": {
       "applicationUrl": "http://localhost",
@@ -15,6 +15,7 @@
   "profiles": {
     "IIS Express": {
       "commandName": "IISExpress",
+      "launchBrowser": true,
       "launchUrl": "api/request",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"

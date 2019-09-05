@@ -1,26 +1,24 @@
 ﻿using System;
-using RequestManager.Extensions;
+using Newtonsoft.Json;
+using RequestManager.Cosmos;
 
 namespace RequestManager.Model
 {
-    public class Request: IEquatable<Request>
+    public class Request : Entity, IEquatable<Request>
     {
-        public int Id { get; set; }
+        [JsonProperty("key")]
+        public override Guid Key { get; set; }
+        [JsonProperty("user")]
         public string User { get; set; }
+        [JsonProperty("email")]
         public string Email { get; set; }
         public Package Package { get; set; }
+        [JsonProperty("submittedOn")]
         public DateTime SubmittedOn { get; set; }
+        [JsonProperty("status")]
         public RequestStatus Status { get; set; }
-        public Guid CorrelationKey { get; set; }
+        [JsonProperty("distribution")]
         public DistributionType Distribution { get; set; }
-
-        public bool Match(string pattern)
-        {
-            return 
-                User.Match(pattern) || 
-                Package.Name.Match(pattern) || 
-                Email.Match(pattern);
-        }
 
         public override bool Equals(object obj)
         {
@@ -30,17 +28,17 @@ namespace RequestManager.Model
         }
         public override int GetHashCode()
         {
-            return Id;
+            return Key.GetHashCode();
         }
         public bool Equals(Request other)
         {
             if (other == null) return false;
-            return (Id.Equals(other.Id));
+            return (Key.Equals(other.Key));
         }
 
         public override string ToString()
         {
-            return $"Id: {Id}, User: {User}, Status: {Status}, Package: {Package}, SubmittedOn: {SubmittedOn}, Distribution: {Distribution}, CorrelationKey: {CorrelationKey}";
+            return $"Key: {Key}, User: {User}, Status: {Status}, Package: {Package}, SubmittedOn: {SubmittedOn}, Distribution: {Distribution}";
         }
     }
 }

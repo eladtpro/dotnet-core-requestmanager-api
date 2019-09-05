@@ -2,8 +2,8 @@
 {
     public enum PackageType
     {
-        Any = 0,
-        Angular = 1,
-        Nuget = 2
+        Npm = 0,
+        Nuget = 1,
+        VsExtension = 2
     }
 }
