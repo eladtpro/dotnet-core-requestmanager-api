@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using RequestManager.Cosmos;
 using RequestManager.Model;
 using RequestManager.Services;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace RequestManager.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class RequestController : Controller

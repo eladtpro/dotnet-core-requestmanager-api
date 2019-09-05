@@ -13,6 +13,11 @@ namespace RequestManager.Cosmos
     {
         private readonly Container container;
 
+        public CosmosDbService(CosmosDb cosmosDb)
+        {
+            container = cosmosDb.GetContainer<TEntity>();
+        }
+
         public async Task<IEnumerable<TEntity>> ListAsync(string query)
         {
             FeedIterator<TEntity> feed = container.GetItemQueryIterator<TEntity>(new QueryDefinition(query));
@@ -24,11 +29,6 @@ namespace RequestManager.Cosmos
             }
 
             return results;
-        }
-
-        public CosmosDbService(CosmosDb cosmosDb)
-        {
-            container = cosmosDb.GetContainer<TEntity>();
         }
 
         public async Task<TEntity> AddAsync(TEntity entity)

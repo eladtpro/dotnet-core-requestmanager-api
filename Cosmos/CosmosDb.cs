@@ -14,7 +14,7 @@ namespace RequestManager.Cosmos
         public Container GetContainer<TEntity>()
             where TEntity : Entity
         {
-            string conntainerName = nameof(TEntity);
+            string conntainerName = typeof(TEntity).Name;//nameof(TEntity);
             // TODO: use elegant scenario solution 
             return database.CreateContainerIfNotExistsAsync(conntainerName, "/id").Result.Container;
         }

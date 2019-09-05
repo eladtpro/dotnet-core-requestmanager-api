@@ -19,6 +19,10 @@ using Microsoft.Azure.Cosmos;
 using RequestManager.Model;
 using Microsoft.AspNetCore.Diagnostics;
 using System.Net;
+using Microsoft.Net.Http.Headers;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
+using Microsoft.IdentityModel.Protocols;
+using System.Net.Http;
 
 namespace RequestManager
 {
@@ -37,39 +41,27 @@ namespace RequestManager
             services.AddAuthentication(options =>
             {
                 options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
-                options.DefaultAuthenticateScheme = OpenIdConnectDefaults.AuthenticationScheme;
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             })
-            .AddOpenIdConnect(options =>
+            .AddJwtBearer(options =>
             {
-                Configuration.Bind("OpenIdConnect", options);
-                options.Events.OnRedirectToIdentityProvider = context =>
-                {
-                    context.Response.Headers["Location"] = context.Request.Path.Value;
-                    context.Response.StatusCode = 302;
-                    return Task.CompletedTask;
-                };
+                Configuration.Bind("JwtBearer", options);
+                HttpClient httpClient = new HttpClient(options.BackchannelHttpHandler ?? new HttpClientHandler());
+                httpClient.Timeout = options.BackchannelTimeout;
+                httpClient.MaxResponseContentBufferSize = 1024 * 1024 * 10; // 10 MB
+                options.ConfigurationManager = new ConfigurationManager<OpenIdConnectConfiguration>(options.MetadataAddress, new OpenIdConnectConfigurationRetriever(),
+                    new HttpDocumentRetriever(httpClient) { RequireHttps = options.RequireHttpsMetadata });
             })
-            //.AddJwtBearer(options =>
-            //{
-            //    Configuration.Bind("JwtBearer", options);
-            //})
-            .AddCookie(options =>
-            {
-                options.Events.OnRedirectToLogin = context =>
-                {
-                    context.Response.Headers["Location"] = context.RedirectUri;
-                    context.Response.StatusCode = 401;
-                    return Task.CompletedTask;
-                };
-            });
+            .AddCookie();
 
             services.AddCors(o => o.AddPolicy("CorsPolicy", builder =>
             {
                 builder
                 .AllowCredentials()
                 .AllowAnyMethod()
-                .AllowAnyHeader()
+                .WithHeaders(HeaderNames.ContentType, HeaderNames.AccessControlAllowOrigin, HeaderNames.Authorization)
+                //.AllowAnyHeader()
                 .WithOrigins("http://localhost:4200"/*, "http://localhost:8080", "http://localhost:3000"*/);
             }));
 
