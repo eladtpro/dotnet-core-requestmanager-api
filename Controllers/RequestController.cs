@@ -26,7 +26,8 @@ namespace RequestManager.Controllers
         [HttpGet]
         public async Task<IEnumerable<Request>> List(RequestStatus? status, PackageType? type, string pattern)
         {
-            StringBuilder query = new StringBuilder("SELECT * FROM Request r WHERE 1=1 ");
+            string conntainerName = typeof(Request).Name;//nameof(TEntity);
+            StringBuilder query = new StringBuilder($"SELECT * FROM {conntainerName} r WHERE 1=1 ");
 
             if (null != status)
                 query.AppendLine($"AND r.status = {status}");

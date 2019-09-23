@@ -12,6 +12,7 @@ namespace RequestManager.Model
         public string User { get; set; }
         [JsonProperty("email")]
         public string Email { get; set; }
+        [JsonProperty("package")]
         public Package Package { get; set; }
         [JsonProperty("submittedOn")]
         public DateTime SubmittedOn { get; set; }
