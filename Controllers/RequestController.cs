@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace RequestManager.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class RequestController : Controller
@@ -26,8 +26,8 @@ namespace RequestManager.Controllers
         [HttpGet]
         public async Task<IEnumerable<Request>> List(RequestStatus? status, PackageType? type, string pattern)
         {
-            string conntainerName = typeof(Request).Name;//nameof(TEntity);
-            StringBuilder query = new StringBuilder($"SELECT * FROM {conntainerName} r WHERE 1=1 ");
+            string containerName = typeof(Request).Name;//nameof(TEntity);
+            StringBuilder query = new StringBuilder($"SELECT * FROM {containerName} r WHERE 1=1 ");
 
             if (null != status)
                 query.AppendLine($"AND r.status = {status}");

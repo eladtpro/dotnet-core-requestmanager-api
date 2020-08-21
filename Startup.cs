@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -12,13 +10,11 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using RequestManager.Directory;
 using System;
-using System.Threading.Tasks;
 using RequestManager.Cosmos;
 using Microsoft.Azure.Cosmos.Fluent;
 using Microsoft.Azure.Cosmos;
 using RequestManager.Model;
 using Microsoft.AspNetCore.Diagnostics;
-using System.Net;
 using Microsoft.Net.Http.Headers;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Protocols;
@@ -84,7 +80,7 @@ namespace RequestManager
 
             services.AddSignalR();
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvc(option => option.EnableEndpointRouting = false);
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>(); // https://stackoverflow.com/questions/36641338/how-get-current-user-in-asp-net-core
 
             services.AddMemoryCache();
@@ -101,9 +97,9 @@ namespace RequestManager
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider svp, ILogger<Startup> logger)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider svp, ILogger<Startup> logger)
         {
-            if (env.IsDevelopment())
+            if ("Local" == env.EnvironmentName)
             {
                 LdapConnectionSettings.Current = Configuration.GetSection("LdapConnection").Get<LdapConnectionSettings>();
                 app.UseDeveloperExceptionPage();
@@ -150,7 +146,5 @@ namespace RequestManager
 
             app.UseMvc();
         }
-
-
     }
 }
