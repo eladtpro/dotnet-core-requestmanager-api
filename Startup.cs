@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -19,6 +18,7 @@ using Microsoft.Net.Http.Headers;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Protocols;
 using System.Net.Http;
+using Microsoft.Extensions.Hosting;
 
 namespace RequestManager
 {
@@ -80,7 +80,8 @@ namespace RequestManager
 
             services.AddSignalR();
 
-            services.AddMvc(option => option.EnableEndpointRouting = false);
+            services.AddControllers().AddXmlSerializerFormatters();
+            
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>(); // https://stackoverflow.com/questions/36641338/how-get-current-user-in-asp-net-core
 
             services.AddMemoryCache();
@@ -99,10 +100,10 @@ namespace RequestManager
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider svp, ILogger<Startup> logger)
         {
-            if ("Local" == env.EnvironmentName)
+            if (env.IsDevelopment())
             {
-                LdapConnectionSettings.Current = Configuration.GetSection("LdapConnection").Get<LdapConnectionSettings>();
                 app.UseDeveloperExceptionPage();
+                LdapConnectionSettings.Current = Configuration.GetSection("LdapConnection").Get<LdapConnectionSettings>();
             }
             else
             {
@@ -127,7 +128,9 @@ namespace RequestManager
             });
 
             app.UseSwagger();
+            app.UseRouting();
             app.UseAuthentication();
+            app.UseAuthorization();
 
             // https://medium.com/@rukshandangalla/how-to-notify-your-angular-5-app-using-signalr-5e5aea2030b2
             app.UseCors("CorsPolicy");
@@ -144,7 +147,10 @@ namespace RequestManager
             IHttpContextAccessor accessor = svp.GetService<IHttpContextAccessor>();
             LdapRepository.SetHttpContextAccessor(accessor);
 
-            app.UseMvc();
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
         }
     }
 }
