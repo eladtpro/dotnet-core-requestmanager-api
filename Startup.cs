@@ -129,8 +129,8 @@ namespace RequestManager
 
             app.UseSwagger();
             app.UseRouting();
-            app.UseAuthentication();
-            app.UseAuthorization();
+            //app.UseAuthentication();
+            //app.UseAuthorization();
 
             // https://medium.com/@rukshandangalla/how-to-notify-your-angular-5-app-using-signalr-5e5aea2030b2
             app.UseCors("CorsPolicy");
