@@ -26,7 +26,7 @@ namespace RequestManager.Services
 		{
 			return await Task.Run(() =>
 			{
-				string id = (Dummy.Requests.Values.ToList().Max(r => r.Id) + 1).ToString();
+				int id = (Dummy.Requests.Values.ToList().Max(r => r.Id) + 1);
 				Request request = new Request
 				{
 					Id = id,
@@ -44,20 +44,20 @@ namespace RequestManager.Services
 			});
 		}
 
-		public async Task<Request> DeleteAsync(Guid key)
+		public async Task<Request> DeleteAsync(int id)
 		{
 			return await Task.Run(() =>
 			{
-				Dummy.Requests.TryRemove(key.ToString("B"), out Request request);
+				Dummy.Requests.TryRemove(id, out Request request);
 				return request;
 			});
 		}
 
-		public async Task<Request> GetAsync(Guid key)
+		public async Task<Request> GetAsync(int id)
 		{
 			return await Task.Run(() =>
 			{
-				return Dummy.Requests[key.ToString("B")];
+				return Dummy.Requests[id];
 			});
 
 		}
@@ -67,8 +67,8 @@ namespace RequestManager.Services
 
 			return await Task.Run(() =>
 			{
-				Dummy.Requests[entity.Key.ToString("B")] = entity;
-				return Dummy.Requests[entity.Key.ToString("B")];
+				Dummy.Requests[entity.Id] = entity;
+				return Dummy.Requests[entity.Id];
 			});
 		}
 

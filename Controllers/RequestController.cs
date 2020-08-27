@@ -40,10 +40,10 @@ namespace RequestManager.Controllers
         }
 
         // GET api/requests/523486
-        [HttpGet("{key}")]
-        public async Task<Request> Get(Guid key)
+        [HttpGet("{id}")]
+        public async Task<Request> Get(int id)
         {
-            return await service.GetAsync(key);
+            return await service.GetAsync(id);
         }
 
         // POST api/requests
@@ -57,17 +57,17 @@ namespace RequestManager.Controllers
         }
 
         // PUT api/requests
-        [HttpPut("{key}")]
+        [HttpPut("{id}")]
         public async Task<Request> Put([FromBody]Request request)
         {
             return await service.UpdateAsync(request);
         }
 
         // DELETE api/requests/5
-        [HttpDelete("{key}")]
-        public async Task<Request> Delete(Guid key)
+        [HttpDelete("{id}")]
+        public async Task<Request> Delete(int id)
         {
-            return await service.DeleteAsync(key);
+            return await service.DeleteAsync(id);
         }
     }
 }

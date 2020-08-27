@@ -8,21 +8,21 @@ namespace RequestManager.Model
 {
 	public static class Dummy
 	{
-		private static readonly Lazy<ConcurrentDictionary<string, Request>> requests = new Lazy<ConcurrentDictionary<string, Request>>(
-			() => new ConcurrentDictionary<string, Request>(GetRequests()),
+		private static readonly Lazy<ConcurrentDictionary<int, Request>> requests = new Lazy<ConcurrentDictionary<int, Request>>(
+			() => new ConcurrentDictionary<int, Request>(GetRequests()),
 			LazyThreadSafetyMode.PublicationOnly);
 
-		public static ConcurrentDictionary<string, Request> Requests => requests.Value;
+		public static ConcurrentDictionary<int, Request> Requests => requests.Value;
 
 
-		private static Dictionary<string, Request> GetRequests()
+		private static Dictionary<int, Request> GetRequests()
 		{
 			int id = 1;
 
 			List<Request> requestData = new List<Request>{
 				new Request
 				{
-					Id = (++id).ToString(),
+					Id = (++id),
 					Key = new Guid("806a59cd-6356-411e-8208-fbd25f02673c"),
 					User = "Snow.Short\\EPLODE",
 					Email = "ingrid.lawson@genmom.com",
@@ -33,7 +33,7 @@ namespace RequestManager.Model
 				},
 				new Request
 				{
-					Id = (++id).ToString(),
+					Id = (++id),
 					Key = new Guid("ae6c179d-854b-4d12-9dc6-20e8379fd96b"),
 					User = "Maynard.Le\\CONJURICA",
 					Email = "cara.gates@ersum.com",
@@ -43,7 +43,7 @@ namespace RequestManager.Model
 					Distribution = DistributionType.Broadcust
 				},
 				new Request {
-					Id = (++id).ToString(),
+					Id = (++id),
 					Key = new Guid("e6ae464b-f324-408e-8606-f2be6f65f551"),
 					User = "Adkins.Britt\\UNIWORLD",
 					Email = "huff.mendoza@surelogic.com",
@@ -53,7 +53,7 @@ namespace RequestManager.Model
 					Distribution = DistributionType.Broadcust
 				},
 				new Request {
-					Id = (++id).ToString(),
+					Id = (++id),
 					Key = new Guid("099796ea-160b-4a23-a3a4-d3753a439eb8"),
 					User = "Cristina.Justice\\MAROPTIC",
 					Email = "latoya.gonzalez@thredz.com",
@@ -63,7 +63,7 @@ namespace RequestManager.Model
 					Distribution = DistributionType.Silent
 				},
 				new Request {
-					Id = (++id).ToString(),
+					Id = (++id),
 					Key = new Guid("a0d59275-c3b8-4f6c-9228-82231e6eb5c8"),
 					User = "Yates.Houston\\ISOTRONIC",
 					Email = "carlson.perry@centree.com",
@@ -73,7 +73,7 @@ namespace RequestManager.Model
 					Distribution = DistributionType.Broadcust
 				},
 				new Request {
-					Id = (++id).ToString(),
+					Id = (++id),
 					Key = new Guid("9f75a9ae-f6b0-4c6d-8333-9d454be06df2"),
 					User = "Rhodes.Bishop\\NEWCUBE",
 					Email = "evelyn.stanley@centrexin.com",
@@ -83,7 +83,7 @@ namespace RequestManager.Model
 					Distribution = DistributionType.Broadcust
 				},
 				new Request {
-					Id = (++id).ToString(),
+					Id = (++id),
 					Key = new Guid("a0d49275-c3b8-4f6c-9228-82231e6eb5c8"),
 					User = "Yates.Houston\\ISOTRONIC",
 					Email = "carlson.perry@centree.com",
@@ -93,7 +93,7 @@ namespace RequestManager.Model
 					Distribution = DistributionType.Broadcust
 				},
 				new Request {
-					Id = (++id).ToString(),
+					Id = (++id),
 					Key = new Guid("9f75a9ae-f6b0-4c6d-8343-9d454be06df2"),
 					User = "Rhodes.Bishop\\NEWCUBE",
 					Email = "evelyn.stanley@centrexin.com",
@@ -103,7 +103,7 @@ namespace RequestManager.Model
 					Distribution = DistributionType.Broadcust
 				}
 			};
-			return requestData.ToDictionary(r => r.Key.ToString("B"), r => r);
+			return requestData.ToDictionary(r => r.Id, r => r);
 		}
 	}
 }
