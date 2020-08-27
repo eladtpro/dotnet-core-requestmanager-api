@@ -30,7 +30,7 @@ namespace RequestManager.Services
 				Request request = new Request
 				{
 					Id = id,
-					Key = new Guid(),
+					Key = Guid.NewGuid(),
 					User = "Snow.Short\\EPLODE",
 					Email = "ingrid.lawson@genmom.com",
 					Package = new Package { Name = "Boone@latest", Type = PackageType.Npm },
