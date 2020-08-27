@@ -93,7 +93,7 @@ namespace RequestManager
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Request API", Version = "v1" });
+                c.SwaggerDoc("v2", new OpenApiInfo { Title = "Request API", Version = "v2" });
             });
         }
 
@@ -137,7 +137,7 @@ namespace RequestManager
 
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Request Manager API V1");
+                c.SwaggerEndpoint("/swagger/v2/swagger.json", "Request Manager API V2");
                 c.RoutePrefix = string.Empty;
             });
 

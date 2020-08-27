@@ -5,6 +5,7 @@ using RequestManager.Model;
 using RequestManager.Services;
 using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -39,11 +40,16 @@ namespace RequestManager.Controllers
             return await service.ListAsync(query.ToString());
         }
 
-        // GET api/requests/523486
-        [HttpGet("{id}")]
-        public async Task<Request> Get(int id)
+        [HttpGet("{url}")]
+        public async Task<string> Get(string url)
         {
-            return await service.GetAsync(id);
+            using (HttpClient httpClient = new HttpClient())
+            {
+                using (HttpResponseMessage response = await httpClient.GetAsync(url))
+                {
+                    return await response.Content.ReadAsStringAsync();
+                }
+            }
         }
 
         // POST api/requests
