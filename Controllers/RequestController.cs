@@ -6,6 +6,7 @@ using RequestManager.Services;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -40,6 +41,15 @@ namespace RequestManager.Controllers
             return await service.ListAsync(query.ToString());
         }
 
+
+        // GET api/request/currency/mode/amount
+        //[Route("currency")]
+        [HttpGet("{format}/{pattern}/{amount}")]
+        public string Format(string pattern, decimal amount)
+        {
+            return string.Format(pattern, amount);
+        }
+
         [HttpGet("{url}")]
         public async Task<string> Get(string url)
         {
@@ -51,6 +61,8 @@ namespace RequestManager.Controllers
                 }
             }
         }
+
+
 
         // POST api/requests
         [HttpPost]
